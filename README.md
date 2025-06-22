@@ -1,123 +1,121 @@
-# 💸 Digital Wallet API - Project Summary
+# Digital Wallet API
 
-A backend system for a digital wallet built with **FastAPI** and **SQLite** that supports:
+A RESTful API for a digital wallet system built with FastAPI, supporting user registration, login, fund transfers, transaction history, currency conversion, and product purchase using wallet balance.
 
-* ✅ User registration
-* ✅ Wallet funding & transfers
-* ✅ Currency conversion
-* ✅ Product purchases
-* ✅ Transaction history
+## Features
 
----
-
-## 🚀 Tech Stack
-
-* **FastAPI** – Lightweight, async Python web framework
-* **SQLite** – Embedded relational database
-* **bcrypt** – Secure password hashing
-* **currencyapi.com** – Live currency rates API
-* **Uvicorn** – ASGI server for FastAPI
+* User Registration and Login (JWT Auth)
+* Fund Account and Transfer to Other Users
+* View Wallet Balance and Transaction History
+* Currency Conversion (using external API)
+* Buy Products Using Wallet Balance
+* SQLite as Database
+* Docker support
+* Unit testing with `pytest`
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
-```bash
+```
 wallet_api/
-├── main.py                # FastAPI app entry
-├── models.py              # SQLAlchemy models
-├── schemas.py             # Pydantic schemas
-├── database.py            # DB setup
-├── auth.py                # Basic Auth handling
-├── crud.py                # Business logic
-├── init_db.py             # DB initialization
-├── .env.example           # Env template
-├── README.md
-├── requirements.txt       # Dependencies
+├── main.py
+├── models.py
+├── schemas.py
+├── crud.py
+├── database.py
+├── auth.py
+├── utils/
+│   └── currency.py
 ├── routes/
 │   ├── user.py
 │   ├── wallet.py
 │   └── product.py
-├── utils/
-│   └── currency.py        # Currency conversion helper
-└── tests/
-    └── test_wallet.py
+├── tests/
+│   └── test_wallet.py
+├── .env
+└── requirements.txt
 ```
 
 ---
 
-## 🔐 Authentication
+## Setup Instructions
 
-All protected endpoints use **Basic Auth** with the `Authorization` header:
-
-```http
-Authorization: Basic base64(username:password)
-```
-
-Passwords are stored securely using **bcrypt**.
-
----
-
-## 🛠️ Setup Instructions
+### 1. Clone the repository
 
 ```bash
-# 1. Clone the repository
-$ git clone <repo-url> && cd wallet_api
+git clone https://github.com/yourusername/wallet_api.git
+cd wallet_api
+```
 
-# 2. Create and activate a virtual environment
-$ python -m venv venv
-$ venv\Scripts\activate     # Windows
+### 2. Create and activate virtual environment
 
-# 3. Install required packages
-$ pip install -r requirements.txt
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
 
-# 4. Setup .env file
-$ copy .env.example .env
-# Add your CURRENCY_API_KEY in .env
+### 3. Install dependencies
 
-# 5. Initialize database
-$ python init_db.py
+```bash
+pip install -r requirements.txt
+```
 
-# 6. Run the server
-$ uvicorn main:app --reload
+If you encounter an error about `requirements.txt` missing, manually install:
+
+```bash
+pip install fastapi uvicorn sqlalchemy passlib[bcrypt] python-jose python-dotenv httpx
+```
+
+### 4. Create `.env` file
+
+```
+SECRET_KEY=your_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+EXCHANGE_RATE_API=https://api.exchangerate-api.com/v4/latest/USD
+```
+
+### 5. Run the server
+
+```bash
+uvicorn main:app --reload
+```
+
+Visit: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## Testing
+
+To run the unit tests:
+
+```bash
+pytest tests/
 ```
 
 ---
 
-## 📡 API Endpoints Overview
+## Docker (Optional)
 
-| Method | Endpoint         | Description                       |
-| ------ | ---------------- | --------------------------------- |
-| POST   | `/register`      | Register new user (no auth)       |
-| POST   | `/fund`          | Deposit money to wallet           |
-| POST   | `/pay`           | Send money to another user        |
-| GET    | `/bal?currency=` | View wallet balance in INR/USD... |
-| GET    | `/stmt`          | Get transaction history           |
-| POST   | `/product`       | Add a product                     |
-| GET    | `/product`       | List all products                 |
-| POST   | `/buy`           | Buy product using wallet funds    |
+To build and run with Docker:
 
----
-
-## 🌍 Currency Conversion
-
-For balance in other currencies, conversion is powered by [currencyapi.com](https://currencyapi.com). Use your API key in `.env`:
-
-```
-CURRENCY_API_KEY=your_api_key_here
+```bash
+docker build -t wallet_api .
+docker run -d -p 8000:8000 wallet_api
 ```
 
 ---
 
-## ✅ Final Notes
+## API Endpoints
 
-* Built to be modular and readable
-* Supports automated deployment (Render-ready)
-* Secure, RESTful, and extendable backend
+Visit Swagger UI at `/docs` or Redoc at `/redoc`.
 
 ---
 
-**Created by:** SHWETA PRAGYAN G ✨
+## License
 
-Feel free to fork, star ⭐, and contribute!
+This project is licensed under the MIT License.
+
+
 
